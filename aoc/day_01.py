@@ -1,11 +1,5 @@
-import collections
-
-from aoc.const import INPUT_DIR
-from aoc.utils import clean
-
-
 def part_1(lines: list[str]):
-    calories = 0
+    result = 0
     tmp = []
     for line in lines:
         if line:
@@ -14,10 +8,10 @@ def part_1(lines: list[str]):
             # empty line
             tmp_calories = sum(tmp)
             tmp = []
-            if tmp_calories > calories:
-                calories = tmp_calories
+            if tmp_calories > result:
+                result = tmp_calories
 
-    return calories
+    return result
 
 
 def part_2(lines: list[str]):
@@ -37,11 +31,3 @@ def part_2(lines: list[str]):
                 top_3.append(tmp_calories)
 
     return sum(top_3)
-
-
-if __name__ == '__main__':
-    INPUT = INPUT_DIR / "01.txt"
-    with INPUT.open() as fh:
-        lines = clean(fh.readlines())
-        print(f"1: {part_1(lines)}")
-        print(f"2: {part_2(lines)}")
