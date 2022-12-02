@@ -37,7 +37,7 @@ def solve(day: str):
 
     input_file = INPUT_DIR / f"{module_name}.txt"
     with input_file.open('r') as input_fh:
-        lines = [line.strip() for line in input_fh.readlines()]
+        lines = (line.strip() for line in input_fh.readlines())
 
         click.echo(f'Part 1: {module.part_1(lines)}')
         click.echo(f'Part 2: {module.part_2(lines)}')
