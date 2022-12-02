@@ -29,6 +29,11 @@ def gen(day: str):
     shutil.copy(SHIM_FILE, day_py / f"{filename}.py")
 
 
+def input(lines):
+    for line in lines:
+        yield line.strip()
+
+
 @aoc.command()
 @click.argument('day')
 def solve(day: str):
@@ -36,11 +41,12 @@ def solve(day: str):
     module = importlib.import_module(f'aoc.{module_name}')
 
     input_file = INPUT_DIR / f"{module_name}.txt"
-    with input_file.open('r') as input_fh:
-        lines = (line.strip() for line in input_fh.readlines())
 
-        click.echo(f'Part 1: {module.part_1(lines)}')
-        click.echo(f'Part 2: {module.part_2(lines)}')
+    with input_file.open('r') as input_fh:
+        lines = input_fh.readlines()
+
+        click.echo(f'Part 1: {module.part_1(input(lines))}')
+        click.echo(f'Part 2: {module.part_2(input(lines))}')
 
 
 if __name__ == '__main__':
