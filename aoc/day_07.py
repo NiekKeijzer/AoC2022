@@ -17,7 +17,7 @@ class Directory:
 
     @functools.cached_property
     def size(self) -> int:
-        return sum(c.size for c in self.children)
+        return sum(c.size for c in self.files) + sum(d.size for d in self.directories)
 
     def total(self) -> int:
         total = sum(d.size for d in self.directories) + sum(f.size for f in self.files)
@@ -72,13 +72,31 @@ def smaller_than(directory: Directory, max_size: int = 100_000):
         yield from smaller_than(sub, max_size)
 
 
+def greater_than(directory: Directory, min_size: int):
+    if directory.size > min_size:
+        yield directory
+
+    for sub in directory.directories:
+        yield from greater_than(sub, min_size)
+
+
 def part_1(lines: Generator[str, None, None]):
     tree = build_tree(lines)
 
-    return sum(d.size for d in smaller_than(tree))
+    return sum(d.total() for d in smaller_than(tree))
 
 
 def part_2(lines: Generator[str, None, None]):
-    result = None
+    TOTAL = 70_000_000
+    NEEDED = 30_000_000
 
-    return result
+    tree = build_tree(lines)
+    unused = TOTAL - tree.size
+    needed = NEEDED - (TOTAL - tree.size)
+
+    current = tree
+    for d in greater_than(tree, needed):
+        if d.size < current.size:
+            current = d
+
+    return current.size
