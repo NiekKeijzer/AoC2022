@@ -15,6 +15,4 @@ def part_1(lines: Generator[str, None, None]):
 
 
 def part_2(lines:  Generator[str, None, None]):
-    result = None
-
-    return result
+    return marker(next(lines), 14)
