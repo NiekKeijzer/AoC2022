@@ -16,6 +16,14 @@ def part_1(lines: list[str]):
 
 
 def part_2(lines: list[str]):
-    result = None
+    result = 0
+    group = []
+    for line in lines:
+        group.append(set(line))
+
+        if len(group) == 3:
+            common = group[0].intersection(group[1]).intersection(group[2])
+            result += sum(prio(c) for c in common)
+            group = []
 
     return result
