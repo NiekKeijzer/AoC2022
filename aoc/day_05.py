@@ -29,6 +29,17 @@ def part_1(lines: list[str]):
 
 
 def part_2(lines: list[str]):
-    result = None
+    inp = list(lines)
+    stacks = build_stacks(inp[:8])
 
-    return result
+    for instruction in inp[10:]:
+        _, count, _, source, _, target = instruction.split()
+        count, source, target = int(count), int(source) - 1, int(target) - 1
+
+        to_move = []
+        for _ in range(count):
+            to_move.append(stacks[source].pop())
+
+        stacks[target].extend(reversed(to_move))
+
+    return "".join(x[-1] for x in stacks)
