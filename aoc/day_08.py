@@ -32,7 +32,31 @@ def part_1(lines: Generator[str, None, None]):
     return visible
 
 
-def part_2(lines: Generator[str, None, None]):
-    result = None
+def count_until(seq: list[int], until: int) -> int:
+    i = 0
+    for j in seq:
+        i += 1
+        if j >= until:
+            break
 
-    return result
+    return i
+
+
+def part_2(lines: Generator[str, None, None]):
+    forest = list(lines)
+
+    highest = 0
+    for row_idx, row in enumerate(forest):
+        for col_idx, tree in enumerate(row):
+            column = get_column(forest, col_idx)
+
+            up = count_until(list(reversed(column[:row_idx])), tree)
+            left = count_until(list(reversed(row[:col_idx])), tree)
+            right = count_until(row[col_idx + 1:], tree)
+            down = count_until(column[row_idx + 1:], tree)
+
+            score = up * left * down * right
+            if score > highest:
+                highest = score
+
+    return highest
